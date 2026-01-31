@@ -13,6 +13,7 @@ CGMap is a Python tool for coarse-grain mapping of molecular dynamics trajectori
 - Coordinate wrapping for periodic boundary conditions
 - Detailed logging system
 - Command-line interface
+- Interactive web-based GUI for visual coarse-grain mapping (`cgmap-gui`)
 
 ## Installation
 
@@ -20,6 +21,9 @@ CGMap is a Python tool for coarse-grain mapping of molecular dynamics trajectori
 - Python >= 3.8
 - NumPy
 - PyYAML
+- Panel >= 1.0
+- Bokeh >= 3.0
+- NetworkX
 
 ### Installing from source
 
@@ -102,6 +106,37 @@ In the example above:
 - The mapping starts from the first atom (anchor=0)
 
 This mapping would process a trajectory of 2700 atoms (900 water molecules × 3 atoms) into 900 CG beads.
+
+## GUI
+
+CGMap includes an interactive web-based GUI for building coarse-grain mappings visually.
+
+### Launching the GUI
+
+```bash
+cgmap-gui
+```
+
+To specify a custom port or prevent the browser from opening automatically:
+
+```bash
+cgmap-gui --port 8080 --no-browser
+```
+
+You can also launch the GUI programmatically:
+
+```python
+from cgmap.gui import launch_app
+launch_app()
+```
+
+### GUI Features
+
+- Load LAMMPS dump files and auto-detect molecule types
+- Interactive 3D visualization with atom selection for bead creation
+- Graph-based propagation to map identical molecules automatically
+- CG topology management (bonds, angles, dihedrals)
+- Export mapping YAML and generate CG trajectories (NPZ, XYZ, LAMMPS data)
 
 ## Output Formats
 
