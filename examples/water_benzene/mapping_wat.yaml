@@ -1,0 +1,11 @@
+site-types:
+  WAT:
+    index:    [   0,   1,   2]
+    x-weight: [16.0, 1.0, 1.0]
+    f-weight: [ 1.0, 1.0, 1.0]
+config:
+  - anchor: 0
+    repeat: 900
+    offset: 3
+    sites:
+      - [WAT, 0]

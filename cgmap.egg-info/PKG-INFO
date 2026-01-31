@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: cgmap
 Version: 0.1.0
 Summary: A tool for coarse-grain mapping of molecular dynamics trajectories
@@ -13,6 +13,19 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: numpy
 Requires-Dist: pyyaml
+Requires-Dist: panel>=1.0
+Requires-Dist: bokeh>=3.0
+Requires-Dist: networkx
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
 
 # CGMap
 

@@ -1,2 +1,3 @@
 [console_scripts]
 cgmap = cgmap.cgmap:main
+cgmap-gui = cgmap.gui.app:_cli_main

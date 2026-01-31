@@ -1,6 +1,129 @@
 import numpy as np
 import sys
-dump_item_dtype = {'id':'i8', 'type':'i8', 'x':'f8', 'y':'f8', 'z':'f8', 'ix':'i8', 'iy':'i8', 'iz':'i8', 'xu':'f8', 'yu':'f8', 'zu':'f8', 'fx':'f8', 'fy':'f8', 'fz':'f8'}
+import logging
+
+
+def check_dump_format(filepath):
+    """Quick check of LAMMPS dump file format (first frame only).
+
+    Returns dict with:
+      - valid: bool
+      - columns: list of column names (if found)
+      - num_atoms: int (if found)
+      - has_coords: bool (x,y,z present)
+      - has_forces: bool (fx,fy,fz present)
+      - has_images: bool (ix,iy,iz present)
+      - has_mol: bool (mol column present)
+      - errors: list of error strings
+      - warnings: list of warning strings
+    """
+    result = {
+        'valid': False,
+        'columns': [],
+        'num_atoms': 0,
+        'has_coords': False,
+        'has_forces': False,
+        'has_images': False,
+        'has_mol': False,
+        'errors': [],
+        'warnings': [],
+    }
+
+    try:
+        with open(filepath, 'r') as f:
+            # --- ITEM: TIMESTEP ---
+            line = f.readline().strip()
+            if not line.startswith('ITEM: TIMESTEP'):
+                result['errors'].append(
+                    f"Expected 'ITEM: TIMESTEP' on first line, got: '{line}'"
+                )
+                return result
+            f.readline()  # skip timestep value
+
+            # --- ITEM: NUMBER OF ATOMS ---
+            line = f.readline().strip()
+            if not line.startswith('ITEM: NUMBER OF ATOMS'):
+                result['errors'].append(
+                    f"Expected 'ITEM: NUMBER OF ATOMS', got: '{line}'"
+                )
+                return result
+            try:
+                num_atoms = int(f.readline().strip())
+            except ValueError as e:
+                result['errors'].append(f"Could not parse atom count: {e}")
+                return result
+            result['num_atoms'] = num_atoms
+
+            # --- ITEM: BOX BOUNDS ---
+            line = f.readline().strip()
+            if not line.startswith('ITEM: BOX BOUNDS'):
+                result['errors'].append(
+                    f"Expected 'ITEM: BOX BOUNDS', got: '{line}'"
+                )
+                return result
+            for _ in range(3):
+                f.readline()  # skip box bound lines
+
+            # --- ITEM: ATOMS ---
+            line = f.readline().strip()
+            if not line.startswith('ITEM: ATOMS'):
+                result['errors'].append(
+                    f"Expected 'ITEM: ATOMS', got: '{line}'"
+                )
+                return result
+
+            columns = line.split()[2:]
+            result['columns'] = columns
+
+            # Check required columns
+            required = {'id', 'type', 'x', 'y', 'z'}
+            missing = required - set(columns)
+            if missing:
+                result['errors'].append(
+                    f"Missing required columns: {sorted(missing)}"
+                )
+                return result
+
+            result['has_coords'] = all(c in columns for c in ('x', 'y', 'z'))
+            result['has_forces'] = all(c in columns for c in ('fx', 'fy', 'fz'))
+            result['has_images'] = all(c in columns for c in ('ix', 'iy', 'iz'))
+            result['has_mol'] = 'mol' in columns
+
+            if not result['has_forces']:
+                result['warnings'].append("No force columns (fx fy fz)")
+            if not result['has_images']:
+                result['warnings'].append("No image flag columns (ix iy iz)")
+
+            # Validate first frame atom data
+            expected_cols = len(columns)
+            row_count = 0
+            for _ in range(num_atoms):
+                atom_line = f.readline()
+                if not atom_line:
+                    break
+                parts = atom_line.strip().split()
+                if len(parts) != expected_cols:
+                    result['errors'].append(
+                        f"Row {row_count + 1}: expected {expected_cols} columns, got {len(parts)}"
+                    )
+                    return result
+                row_count += 1
+
+            if row_count != num_atoms:
+                result['errors'].append(
+                    f"Expected {num_atoms} atom rows, found {row_count}"
+                )
+                return result
+
+            result['valid'] = True
+
+    except FileNotFoundError:
+        result['errors'].append(f"File not found: {filepath}")
+    except Exception as e:
+        result['errors'].append(f"Error reading file: {e}")
+
+    return result
+
 
 def read_dump_file(filepath):
     """
@@ -72,10 +195,10 @@ def read_dump_file(filepath):
         return timesteps
     
     except FileNotFoundError:
-        print(f"Error: File '{filepath}' not found")
+        logging.getLogger('cgmap').error(f"File '{filepath}' not found")
         return None
     except Exception as e:
-        print(f"Error reading dump file: {e}")
+        logging.getLogger('cgmap').error(f"Error reading dump file: {e}")
         return None
 
 # Example usage
@@ -130,9 +253,9 @@ def get(dump_data,timestep,property):
             # Get atom positions (assuming x, y, z are columns 3,4,5)
             xyz = dump_data[timestep]["atoms"][:,[id_col_x,id_col_y,id_col_z]]
             return xyz
+        raise ValueError(f"Unknown property: '{property}'. Supported properties: 'xyz', 'id', 'type', 'force', 'ixiyiz'")
     else:
-        print('error to access the dump data')
-        sys.exit()
+        raise ValueError(f"Cannot access dump data for timestep {timestep}")
 
 def get_frame(dump_data,property):
     if property=='xyz':
@@ -174,3 +297,4 @@ def get_frame(dump_data,property):
         # Get atom positions (assuming x, y, z are columns 3,4,5)
         xyz = dump_data["atoms"][:,[id_col_x,id_col_y,id_col_z]]
         return xyz
+    raise ValueError(f"Unknown property: '{property}'. Supported properties: 'xyz', 'id', 'box', 'type', 'force', 'ixiyiz'")

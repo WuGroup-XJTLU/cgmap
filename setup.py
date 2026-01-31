@@ -1,3 +1,4 @@
+import os
 from setuptools import setup, find_packages
 
 setup(
@@ -7,10 +8,14 @@ setup(
     install_requires=[
         "numpy",
         "pyyaml",
+        "panel>=1.0",
+        "bokeh>=3.0",
+        "networkx",
     ],
     entry_points={
         'console_scripts': [
             'cgmap=cgmap.cgmap:main',
+            'cgmap-gui=cgmap.gui.app:_cli_main',
         ],
     },
     author="Zhenghao Wu",

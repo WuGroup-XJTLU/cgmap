@@ -1,2 +1,5 @@
 numpy
 pyyaml
+panel>=1.0
+bokeh>=3.0
+networkx

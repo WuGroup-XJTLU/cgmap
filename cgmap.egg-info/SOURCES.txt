@@ -4,6 +4,7 @@ setup.py
 cgmap/__init__.py
 cgmap/cgmap.py
 cgmap/read_lammps.py
+cgmap/unwrap.py
 cgmap/util.py
 cgmap.egg-info/PKG-INFO
 cgmap.egg-info/SOURCES.txt
@@ -11,3 +12,10 @@ cgmap.egg-info/dependency_links.txt
 cgmap.egg-info/entry_points.txt
 cgmap.egg-info/requires.txt
 cgmap.egg-info/top_level.txt
+cgmap/gui/__init__.py
+cgmap/gui/app.py
+cgmap/gui/bead_manager.py
+cgmap/gui/graph_viewer.py
+cgmap/gui/molecule_detector.py
+cgmap/gui/viewer.py
+cgmap/gui/yaml_exporter.py
