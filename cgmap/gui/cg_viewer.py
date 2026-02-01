@@ -113,7 +113,7 @@ class CGViewer:
     def _empty_html(self):
         doc = f"""<!DOCTYPE html>
 <html><head><style>body{{margin:0;overflow:hidden}}</style></head>
-<body><div style="width:{self.width}px;height:{self.height}px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;color:#ccc;font-family:sans-serif;">No beads to display</div></body></html>"""
+<body><div style="width:{self.width}px;height:{self.height}px;background:linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);display:flex;align-items:center;justify-content:center;color:#64748B;font-family:sans-serif;">No beads to display</div></body></html>"""
         return f'<iframe srcdoc="{html.escape(doc, quote=True)}" style="width:{self.width}px;height:{self.height}px;border:none;"></iframe>'
 
     def _update_html(self):
@@ -191,7 +191,7 @@ class CGViewer:
 <script>
 (function() {{
     var element = document.getElementById("{viewer_id}");
-    var viewer = $3Dmol.createViewer(element, {{backgroundColor: "0x1a1a2e"}});
+    var viewer = $3Dmol.createViewer(element, {{backgroundColor: "0xF8FAFC"}});
     var xyz = "{xyz_str}";
     var names = {names_js};
     viewer.addModel(xyz, "xyz");

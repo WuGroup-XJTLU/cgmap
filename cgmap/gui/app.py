@@ -19,6 +19,64 @@ from cgmap.cgmap import (
 
 pn.extension(sizing_mode='stretch_width')
 
+# ========== ELEGANT LIGHT THEME - Flowing Water Over Hills ==========
+ELEGANT_LIGHT_CSS = """
+/* ========== Foundation ========== */
+:root {
+    --bg-primary: #FAFBFC;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #F0F2F5;
+    --text-primary: #1A1A2E;
+    --text-secondary: #4A5568;
+    --text-tertiary: #718096;
+    --border-subtle: #E2E8F0;
+    --border-light: #EDF2F7;
+    --accent-primary: #5B8DB8;
+    --accent-hover: #4A7BA4;
+    --accent-light: #E8F0F7;
+    --success: #6B9B8A;
+    --success-light: #E6F0EC;
+    --warning: #C9A66B;
+    --warning-light: #F5F0E6;
+    --danger: #B87B7B;
+    --danger-light: #F5E8E8;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.02);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+}
+
+body, html { background-color: var(--bg-primary) !important; color: var(--text-primary) !important; font-family: 'Inter', -apple-system, sans-serif !important; -webkit-font-smoothing: antialiased; }
+.bk-root, .bk-root * { font-family: 'Inter', -apple-system, sans-serif !important; }
+.bk-root { color: var(--text-primary) !important; }
+.bk-input-group > label { color: var(--text-secondary) !important; font-size: 0.6875rem !important; font-weight: 600 !important; text-transform: uppercase !important; letter-spacing: 0.08em !important; margin-bottom: 6px !important; }
+
+/* Nature Style Buttons */
+.bk-btn { background: linear-gradient(180deg, #F5F7F9 0%, #E8ECEF 100%) !important; color: #4A5568 !important; border: 1px solid #D1D9E0 !important; border-radius: var(--radius-md) !important; font-weight: 500 !important; font-size: 0.8125rem !important; padding: 8px 16px !important; box-shadow: 0 2px 4px rgba(0,0,0,0.04) !important; transition: all var(--transition-fast) !important; }
+.bk-btn:hover { background: linear-gradient(180deg, #E8ECEF 0%, #DBE0E5 100%) !important; border-color: #C4CCD4 !important; box-shadow: 0 4px 8px rgba(0,0,0,0.06) !important; transform: translateY(-1px) !important; }
+.bk-btn.bk-btn-primary { background: linear-gradient(180deg, #5B8DB8 0%, #4A7BA4 100%) !important; color: #FFFFFF !important; border-color: #4A7BA4 !important; box-shadow: 0 2px 4px rgba(74, 123, 164, 0.2) !important; }
+.bk-btn.bk-btn-primary:hover { background: linear-gradient(180deg, #4A7BA4 0%, #3D6A8F 100%) !important; }
+.bk-btn.bk-btn-success { background: linear-gradient(180deg, #6B9B8A 0%, #5A8A79 100%) !important; color: #FFFFFF !important; border-color: #5A8A79 !important; }
+.bk-btn.bk-btn-warning { background: linear-gradient(180deg, #C9A66B 0%, #B8955A 100%) !important; color: #FFFFFF !important; }
+.bk-btn.bk-btn-danger { background: linear-gradient(180deg, #B87B7B 0%, #A86A6A 100%) !important; color: #FFFFFF !important; }
+
+.bk-input { background-color: var(--bg-secondary) !important; color: var(--text-primary) !important; border: 1px solid var(--border-subtle) !important; border-radius: var(--radius-md) !important; }
+.bk-input:focus { border-color: var(--accent-primary) !important; box-shadow: 0 0 0 3px var(--accent-light) !important; }
+.bk-select { background-color: var(--bg-secondary) !important; border: 1px solid var(--border-subtle) !important; border-radius: var(--radius-md) !important; }
+
+.alert-info { background: linear-gradient(135deg, #E8F0F7 0%, #D5E3EE 100%) !important; border-color: #B8D4E8 !important; color: #3D5A73 !important; }
+.alert-success { background: linear-gradient(135deg, #E6F0EC 0%, #D4E5DE 100%) !important; border-color: #B3D4C8 !important; color: #3D5A4F !important; }
+.alert-warning { background: linear-gradient(135deg, #F5F0E6 0%, #EDE4D4 100%) !important; border-color: #DDD0B8 !important; color: #6B5A3D !important; }
+.alert-danger { background: linear-gradient(135deg, #F5E8E8 0%, #EDD8D8 100%) !important; border-color: #DDB8B8 !important; color: #6B3D3D !important; }
+
+.left-sidebar, .right-sidebar { background: var(--bg-secondary) !important; border-radius: var(--radius-lg) !important; box-shadow: var(--shadow-md) !important; border: 1px solid var(--border-light) !important; }
+"""
+pn.config.raw_css.append(ELEGANT_LIGHT_CSS)
+pn.config.raw_css.append("@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');")
 
 class CGMapApp:
     """Main GUI application for interactive CG mapping."""
@@ -36,187 +94,187 @@ class CGMapApp:
         self._propagation_snapshot = None  # (beads, color_idx) for undo
 
         # --- Viewers ---
-        self.viewer = MolecularViewer(width=600, height=450)
+        self.viewer = MolecularViewer(width=880, height=600)
         self.viewer.on_selection_change(self._on_selection_change)
 
         # --- CG Topology ---
         self.topology_manager = TopologyManager()
-        self.cg_viewer = CGViewer(width=600, height=450)
+        self.cg_viewer = CGViewer(width=880, height=600)
 
         # --- Sidebar widgets ---
         self.file_input = pn.widgets.TextInput(
             name='Dump file path', placeholder='/path/to/file.dump',
-            width=280,
+            width=290,
         )
-        self.load_btn = pn.widgets.Button(name='Load', button_type='primary', width=280)
+        self.load_btn = pn.widgets.Button(name='Load', button_type='primary', width=290)
         self.load_btn.on_click(self._on_load)
 
         self.hint_input = pn.widgets.TextInput(
             name='Atoms per molecule (optional)',
             placeholder='e.g. 12, 3',
-            width=280,
+            width=290,
         )
 
-        self.status = pn.pane.Alert('Load a LAMMPS dump file to begin.', alert_type='info', width=280)
+        self.status = pn.pane.Alert('Load a LAMMPS dump file to begin.', alert_type='info', width=290)
 
         # Format info display (populated after load)
-        self.format_display = pn.pane.Markdown('', width=280)
+        self.format_display = pn.pane.Markdown('', width=290)
 
         # Molecule type selector
         self.mol_selector = pn.widgets.Select(
-            name='Molecule type', options=[], width=280, disabled=True,
+            name='Molecule type', options=[], width=290, disabled=True,
         )
         self.mol_selector.param.watch(self._on_mol_select, 'value')
 
         # Mass assignment
-        self.mass_header = pn.pane.Markdown('### Atom masses', width=280)
-        self.mass_inputs = pn.Column(width=280)
+        self.mass_header = pn.pane.Markdown('### Atom masses', width=290)
+        self.mass_inputs = pn.Column(width=290)
 
         # Bead creation
         self.bead_name_input = pn.widgets.TextInput(
-            name='Bead name', placeholder='e.g. BENZ', width=280,
+            name='Bead name', placeholder='e.g. BENZ', width=290,
         )
         self.create_bead_btn = pn.widgets.Button(
-            name='Create Bead from Selection', button_type='success', width=280, disabled=True,
+            name='Create Bead from Selection', button_type='success', width=290, disabled=True,
         )
         self.create_bead_btn.on_click(self._on_create_bead)
 
         self.clear_sel_btn = pn.widgets.Button(
-            name='Clear Selection', button_type='warning', width=280,
+            name='Clear Selection', button_type='warning', width=290,
         )
         self.clear_sel_btn.on_click(self._on_clear_selection)
 
         # --- Feature 1: Propagation preview panel ---
-        self.propagate_preview = pn.pane.Markdown('', width=280)
+        self.propagate_preview = pn.pane.Markdown('', width=290)
 
         # --- Feature 2: Preview / Apply propagation ---
         self.preview_propagate_btn = pn.widgets.Button(
-            name='Preview Propagation', button_type='default', width=280, disabled=True,
+            name='Preview Propagation', button_type='default', width=290, disabled=True,
         )
         self.preview_propagate_btn.on_click(self._on_preview_propagate)
 
         self.apply_propagate_btn = pn.widgets.Button(
-            name='Apply Propagation', button_type='success', width=280, disabled=True,
+            name='Apply Propagation', button_type='success', width=290, disabled=True,
         )
         self.apply_propagate_btn.on_click(self._on_apply_propagate)
 
         # --- Feature 3: Highlight unassigned atoms ---
         self.show_unassigned_btn = pn.widgets.Toggle(
-            name='Highlight Unassigned', button_type='warning', width=280,
+            name='Highlight Unassigned', button_type='warning', width=290,
         )
         self.show_unassigned_btn.param.watch(self._on_toggle_unassigned, 'value')
 
         # --- Feature 4: Undo propagation ---
         self.undo_propagate_btn = pn.widgets.Button(
-            name='Undo Propagation', button_type='danger', width=280, disabled=True,
+            name='Undo Propagation', button_type='danger', width=290, disabled=True,
         )
         self.undo_propagate_btn.on_click(self._on_undo_propagate)
 
         # Selection display
-        self.selection_display = pn.pane.Markdown('**Selected atoms:** none', width=280)
+        self.selection_display = pn.pane.Markdown('**Selected atoms:** none', width=290)
 
         # --- Feature 5: Improved beads display ---
-        self.beads_display = pn.pane.Markdown('**Defined beads:** none', width=280)
+        self.beads_display = pn.pane.Markdown('**Defined beads:** none', width=290)
 
         # Bead highlight selector
         self.bead_selector = pn.widgets.Select(
-            name='Highlight bead', options={'(none)': ''}, width=280,
+            name='Highlight bead', options={'(none)': ''}, width=290,
         )
         self.bead_selector.param.watch(self._on_bead_highlight, 'value')
 
         self.delete_bead_btn = pn.widgets.Button(
-            name='Delete Selected Bead', button_type='danger', width=280,
+            name='Delete Selected Bead', button_type='danger', width=290,
         )
         self.delete_bead_btn.on_click(self._on_delete_bead)
 
         self.clear_template_btn = pn.widgets.Button(
-            name='Clear All Template Beads', button_type='danger', width=280,
+            name='Clear All Template Beads', button_type='danger', width=290,
         )
         self.clear_template_btn.on_click(self._on_clear_template)
 
         # Export
         self.export_dir_input = pn.widgets.TextInput(
-            name='Export directory', value='./cg_mapping_output', width=280,
+            name='Export directory', value='./cg_mapping_output', width=290,
         )
         self.export_btn = pn.widgets.Button(
-            name='Export YAML', button_type='primary', width=280, disabled=True,
+            name='Export YAML', button_type='primary', width=290, disabled=True,
         )
         self.export_btn.on_click(self._on_export)
-        self.export_status = pn.pane.Alert('', alert_type='info', visible=False, width=280)
+        self.export_status = pn.pane.Alert('', alert_type='info', visible=False, width=290)
 
         # --- Generate CG Trajectory widgets ---
         self.gen_format_selector = pn.widgets.Select(
-            name='Output format', options=['xyz', 'npz', 'data'], value='npz', width=280,
+            name='Output format', options=['xyz', 'npz', 'data'], value='npz', width=290,
         )
         self.gen_output_prefix = pn.widgets.TextInput(
-            name='Output prefix', value='cg_output', width=280,
+            name='Output prefix', value='cg_output', width=290,
         )
         self.gen_wrap_checkbox = pn.widgets.Checkbox(
-            name='Wrap coordinates', value=True, width=280,
+            name='Wrap coordinates', value=True, width=290,
         )
         self.gen_target_selector = pn.widgets.Select(
-            name='Target', options=['all', 'coord'], value='all', width=280,
+            name='Target', options=['all', 'coord'], value='all', width=290,
         )
         self.gen_frame_input = pn.widgets.IntInput(
-            name='Frame index (data format only)', value=0, start=0, width=280,
+            name='Frame index (data format only)', value=0, start=0, width=290,
         )
         self.gen_btn = pn.widgets.Button(
-            name='Generate CG Trajectory', button_type='success', width=280, disabled=True,
+            name='Generate CG Trajectory', button_type='success', width=290, disabled=True,
         )
         self.gen_btn.on_click(self._on_generate)
-        self.gen_status = pn.pane.Markdown('', width=280)
+        self.gen_status = pn.pane.Markdown('', width=290)
 
         # --- Bond visualization widgets ---
-        self.show_bonds_checkbox = pn.widgets.Checkbox(name='Show bonds', value=True, width=280)
+        self.show_bonds_checkbox = pn.widgets.Checkbox(name='Show bonds', value=True, width=290)
         self.show_bonds_checkbox.param.watch(self._on_toggle_bonds, 'value')
 
         self.data_file_input = pn.widgets.TextInput(
-            name='LAMMPS data file (optional)', placeholder='/path/to/file.data', width=280)
-        self.load_data_btn = pn.widgets.Button(name='Load Bonds', button_type='default', width=280)
+            name='LAMMPS data file (optional)', placeholder='/path/to/file.data', width=290)
+        self.load_data_btn = pn.widgets.Button(name='Load Bonds', button_type='default', width=290)
         self.load_data_btn.on_click(self._on_load_data_file)
 
-        self.bond_status = pn.pane.Markdown('*Bonds: auto-detect (distance)*', width=280)
+        self.bond_status = pn.pane.Markdown('*Bonds: auto-detect (distance)*', width=290)
 
         # --- CG Topology widgets ---
         self.infer_bonds_btn = pn.widgets.Button(
-            name='Infer Bonds from Atomistic', button_type='primary', width=280, disabled=True,
+            name='Infer Bonds from Atomistic', button_type='primary', width=290, disabled=True,
         )
         self.infer_bonds_btn.on_click(self._on_infer_bonds)
 
         self.bond_editor_input = pn.widgets.TextInput(
-            name='Bond input', placeholder='e.g. 0-1 or BENZ-WAT', width=280,
+            name='Bond input', placeholder='e.g. 0-1 or BENZ-WAT', width=290,
         )
         self.add_bond_btn = pn.widgets.Button(
-            name='Add Bond', button_type='success', width=280,
+            name='Add Bond', button_type='success', width=290,
         )
         self.add_bond_btn.on_click(self._on_add_bond)
 
         self.bond_list_select = pn.widgets.Select(
-            name='Bond list', options={}, width=280,
+            name='Bond list', options={}, width=290,
         )
         self.bond_list_select.param.watch(self._on_bond_select, 'value')
 
         self.remove_bond_btn = pn.widgets.Button(
-            name='Remove Selected Bond', button_type='danger', width=280,
+            name='Remove Selected Bond', button_type='danger', width=290,
         )
         self.remove_bond_btn.on_click(self._on_remove_bond)
 
         self.clear_all_bonds_btn = pn.widgets.Button(
-            name='Clear All Bonds', button_type='danger', width=280,
+            name='Clear All Bonds', button_type='danger', width=290,
         )
         self.clear_all_bonds_btn.on_click(self._on_clear_all_bonds)
 
         self.show_angles_toggle = pn.widgets.Toggle(
-            name='Show Angles', value=False, width=280,
+            name='Show Angles', value=False, width=290,
         )
         self.show_angles_toggle.param.watch(self._on_toggle_angles, 'value')
 
         self.show_dihedrals_toggle = pn.widgets.Toggle(
-            name='Show Dihedrals', value=False, width=280,
+            name='Show Dihedrals', value=False, width=290,
         )
         self.show_dihedrals_toggle.param.watch(self._on_toggle_dihedrals, 'value')
 
-        self.topology_summary = pn.pane.Markdown('', width=280)
+        self.topology_summary = pn.pane.Markdown('', width=290)
 
     def _on_load(self, event):
         path = self.file_input.value.strip()
@@ -1258,11 +1316,39 @@ class CGMapApp:
         return None
 
     def layout(self):
-        sidebar = pn.Column(
-            pn.pane.Markdown('# CG Mapping GUI'),
-            self.status,
-            pn.layout.Divider(),
-            pn.pane.Markdown('### Load trajectory'),
+        # ========== TOP HEADER - Centered with handwritten style ==========
+        header = pn.pane.HTML(
+            '''<div style="
+                width: 100%;
+                text-align: center;
+                padding: 20px 0 16px 0;
+                background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
+                border-bottom: 1px solid #E2E8F0;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            ">
+                <div style="
+                    font-family: 'Caveat', cursive, -apple-system, sans-serif;
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: #1A1A2E;
+                    letter-spacing: 0.02em;
+                    line-height: 1;
+                    margin-bottom: 4px;
+                ">CG-Map</div>
+                <div style="
+                    font-size: 0.8125rem;
+                    color: #64748B;
+                    font-weight: 500;
+                    letter-spacing: 0.03em;
+                ">Coarse-Grained Molecular Mapping</div>
+            </div>''',
+            sizing_mode='stretch_width',
+            height=90,
+        )
+        
+        # ========== LEFT SIDEBAR: Core Controls ==========
+        left_sidebar = pn.Column(
+            pn.pane.Markdown('## Load'),
             self.file_input,
             self.hint_input,
             self.load_btn,
@@ -1271,34 +1357,45 @@ class CGMapApp:
             self.mass_header,
             self.mass_inputs,
             pn.layout.Divider(),
-            pn.pane.Markdown('### Molecule type'),
+            pn.pane.Markdown('## Molecule'),
             self.mol_selector,
             pn.layout.Divider(),
-            pn.pane.Markdown('### Bond visualization'),
+            pn.pane.Markdown('## Bonds'),
             self.show_bonds_checkbox,
             self.data_file_input,
             self.load_data_btn,
             self.bond_status,
             pn.layout.Divider(),
-            pn.pane.Markdown('### Create bead'),
+            pn.pane.Markdown('## Create Bead'),
             self.selection_display,
             self.bead_name_input,
             self.create_bead_btn,
             self.clear_sel_btn,
             pn.layout.Divider(),
-            pn.pane.Markdown('### Propagation'),
+            self.status,
+            width=380,
+            sizing_mode='fixed',
+            css_classes=['left-sidebar'],
+            styles={'background': '#FFFFFF', 'border-radius': '14px', 'padding': '20px'},
+            margin=(16, 0, 16, 24),
+        )
+
+        # ========== RIGHT SIDEBAR: Advanced Controls ==========
+        right_sidebar = pn.Column(
+            pn.pane.Markdown('## Propagation'),
             self.propagate_preview,
             self.preview_propagate_btn,
             self.apply_propagate_btn,
             self.undo_propagate_btn,
             self.show_unassigned_btn,
             pn.layout.Divider(),
+            pn.pane.Markdown('## Beads'),
             self.beads_display,
             self.bead_selector,
             self.delete_bead_btn,
             self.clear_template_btn,
             pn.layout.Divider(),
-            pn.pane.Markdown('### CG Topology'),
+            pn.pane.Markdown('## Topology'),
             self.infer_bonds_btn,
             self.bond_editor_input,
             self.add_bond_btn,
@@ -1308,51 +1405,90 @@ class CGMapApp:
             self.show_angles_toggle,
             self.show_dihedrals_toggle,
             self.topology_summary,
-            pn.layout.Divider(),
-            pn.pane.Markdown('### Export'),
-            self.export_dir_input,
-            self.export_btn,
-            self.export_status,
-            pn.layout.Divider(),
-            pn.pane.Markdown('### Generate CG Trajectory'),
-            self.gen_format_selector,
-            self.gen_output_prefix,
-            self.gen_wrap_checkbox,
-            self.gen_target_selector,
-            self.gen_frame_input,
-            self.gen_btn,
-            self.gen_status,
-            width=320,
-            height=1000,
+            width=380,
             sizing_mode='fixed',
-            scroll=True,
+            css_classes=['right-sidebar'],
+            styles={'background': '#FFFFFF', 'border-radius': '14px', 'padding': '20px'},
+            margin=(16, 24, 16, 0),
         )
 
-        # Create tabs for different views
+        # ========== CENTER: Visualization + Export/Generate ==========
         atomistic_tab = pn.Column(
-            pn.pane.Markdown('## Atomistic Mapping'),
-            pn.pane.Markdown('*Click atoms to select/deselect. Selected atoms shown in gold.*'),
             self.viewer.get_panel(),
             sizing_mode='fixed',
-            width=640,
-            scroll=True,
+            margin=0,
         )
 
         cg_tab = pn.Column(
-            pn.pane.Markdown('## CG Topology'),
-            pn.pane.Markdown('*Hover over beads to see names. Use sidebar to manage bonds.*'),
             self.cg_viewer.get_panel(),
             sizing_mode='fixed',
-            width=640,
-            scroll=True,
+            margin=0,
         )
 
-        tabs = pn.Tabs(
-            ('Atomistic Mapping', atomistic_tab),
-            ('CG Topology', cg_tab),
+        viewer_tabs = pn.Tabs(
+            ('Atomistic', atomistic_tab),
+            ('CG', cg_tab),
+            sizing_mode='fixed',
+            width=920,
+            styles={'background': '#FFFFFF', 'border-radius': '14px', 'box-shadow': '0 4px 6px -1px rgba(0,0,0,0.05)'},
         )
 
-        return pn.Row(sidebar, pn.Spacer(width=20), tabs)
+        export_section = pn.Column(
+            pn.pane.Markdown('## Export'),
+            pn.Row(
+                pn.Column(self.export_dir_input, width=520),
+                pn.Column(self.export_btn, self.export_status, width=200),
+                sizing_mode='fixed',
+            ),
+            width=920,
+            sizing_mode='fixed',
+            styles={'background': '#FFFFFF', 'border-radius': '14px', 'padding': '16px 20px', 'margin-top': '12px'},
+        )
+
+        generate_section = pn.Column(
+            pn.pane.Markdown('## Generate CG Trajectory'),
+            pn.Row(
+                pn.Column(
+                    pn.Row(self.gen_format_selector, self.gen_output_prefix, sizing_mode='fixed'),
+                    sizing_mode='fixed',
+                ),
+                pn.Column(
+                    pn.Row(self.gen_wrap_checkbox, self.gen_target_selector, sizing_mode='fixed'),
+                    sizing_mode='fixed',
+                ),
+                pn.Column(
+                    pn.Row(self.gen_frame_input, self.gen_btn, sizing_mode='fixed'),
+                    sizing_mode='fixed',
+                ),
+                sizing_mode='fixed',
+            ),
+            self.gen_status,
+            width=920,
+            sizing_mode='fixed',
+            styles={'background': '#FFFFFF', 'border-radius': '14px', 'padding': '16px 20px', 'margin-top': '12px'},
+        )
+
+        center_column = pn.Column(
+            viewer_tabs,
+            export_section,
+            generate_section,
+            sizing_mode='fixed',
+            width=920,
+            margin=(16, 16, 16, 16),
+        )
+
+        # ========== MAIN CONTENT AREA ==========
+        main_content = pn.Row(
+            left_sidebar,
+            pn.Spacer(width=16),
+            center_column,
+            pn.Spacer(width=16),
+            right_sidebar,
+            sizing_mode='stretch_width',
+            styles={'background': '#FAFBFC', 'justify-content': 'center'},
+        )
+        
+        return pn.Column(header, main_content, sizing_mode='stretch_both', styles={'background': '#FAFBFC'})
 
 
 def create_app():

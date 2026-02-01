@@ -39,8 +39,8 @@ ELEMENT_COLORS = {
 
 # Colors by LAMMPS atom type index
 TYPE_COLORS = [
-    '#909090', '#FF0D0D', '#3050F8', '#FFFF30', '#FF8000',
-    '#90E050', '#1FF01F', '#E090D0', '#F0A0A0', '#B09090',
+    '#64748B', '#3B82F6', '#10B981', '#8B5CF6', '#F59E0B',
+    '#EC4899', '#06B6D4', '#F97316', '#6366F1', '#84CC16',
 ]
 
 
@@ -208,7 +208,7 @@ class MolecularViewer:
     def _empty_html(self):
         doc = f"""<!DOCTYPE html>
 <html><head><style>body{{margin:0;overflow:hidden}}</style></head>
-<body><div style="width:{self.width}px;height:{self.height}px;background:#1a1a2e;display:flex;align-items:center;justify-content:center;color:#ccc;font-family:sans-serif;">Load a dump file to view molecules</div></body></html>"""
+<body><div style="width:{self.width}px;height:{self.height}px;background:linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);display:flex;align-items:center;justify-content:center;color:#64748B;font-family:sans-serif;">Load a dump file to view molecules</div></body></html>"""
         return f'<iframe srcdoc="{html.escape(doc, quote=True)}" style="width:{self.width}px;height:{self.height}px;border:none;"></iframe>'
 
     def _update_html(self):
@@ -310,7 +310,7 @@ class MolecularViewer:
 <script>
 (function() {{
     var element = document.getElementById("{viewer_id}");
-    var viewer = $3Dmol.createViewer(element, {{backgroundColor: "0x1a1a2e"}});
+    var viewer = $3Dmol.createViewer(element, {{backgroundColor: "0xF8FAFC"}});
     var xyz = "{xyz_str}";
     viewer.addModel(xyz, "xyz"{add_model_opts});
     {styles_js}
